@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+  <title>App</title>
+  <meta charset="utf-8" /> {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Set the size of the div element that contains the map */
+    #map {
+      height: 600px;
+      width: 100%;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI2hh0DTClUtH3VmLACha4tWQlCT_qvaA"></script>
+</head>
+
+
+
+<body style="background-color:#41f46d">
+  <script>
+
+  $(document).ready(function() {
+      $('#Rank').bind('change', function() {
+          var elements = $('div.container').children().hide(); // hide all the elements
+          var value = $(this).val();
+
+          if (value.length) { // if somethings' selected
+              elements.filter('.' + value).show(); // show the ones we want
+          }
+      }).trigger('change');
+
+  });
+
+
+
+
+
+  //*************************************************************
+  // Initialize and add the map using browser location #section 1
+  //*************************************************************
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(geoSuccess);
+    function geoSuccess(position) {
+      var map = new google.maps.Map(
+        document.getElementById('map'), {
+          zoom: 10,
+          center:{
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+      });
+
+
+      //add listener to get lat lon on click on MAP
+      google.maps.event.addListener(map, "click", function (e)
+      {
+        //lat and lng is available in e object
+        var lat = e.latLng.lat();
+        var lng = e.latLng.lng();
+        console.log(lat,lng);
+
+        input1 = document.getElementById('Input1').value;
+        console.log(input1);
+        // input2 = document.getElementById('Select2').value;
+        // console.log(input2);
+        NODP = document.getElementById('NODP').value;
+        console.log(NODP);
+        // input4 = document.getElementById('Select4').value;
+        // console.log(input4);
+        // input5 = document.getElementById('Select5').value;
+        // console.log(input5);
+
+
+
+var data =        {
+        	"CO": [{
+        			"MopedLT80": "0.46"
+        		},
+        		{
+        			"MopedLT100": "0.81"
+        		},
+        		{
+        			"Scooter2SLT80": "2.37"
+        		},
+        		{
+        			"Scooter2SGT80": "0.16"
+        		},
+        		{
+        			"Scooter4SGT100": "0.40"
+        		},
+        		{
+        			"MotorcycleLT100": "1.65"
+        		},
+        		{
+        			"Motorcycle100TO200": "1.48"
+        		},
+        		{
+        			"MotorcycleGT100": "0.72"
+        		},
+        		{
+        			"threeW2S": "1.15"
+        		},
+        		{
+        			"threeW4S": "2.29"
+        		},
+        		{
+        			"threeWDiesel": "0.41"
+        		},
+        		{
+        			"threeWCNG": "0.69"
+        		},
+        		{
+        			"LCVLT300": "3.00"
+        		},
+        		{
+        			"LCVGT300": "3.66"
+        		}
+
+
+        	],
+        	"HC": [{
+        			"MopedLT80": "0.60"
+        		},
+        		{
+        			"MopedLT100": "0.50"
+        		},
+        		{
+        			"Scooter2SLT80": "2.05"
+        		},
+        		{
+        			"Scooter2SGT80": "0.86"
+        		},
+        		{
+        			"Scooter4SGT100": "0.15"
+        		},
+        		{
+        			"MotorcycleLT100": "0.61"
+        		},
+        		{
+        			"Motorcycle100TO200": "0.50"
+        		},
+        		{
+        			"MotorcycleGT100": "0.52"
+        		},
+        		{
+        			"threeW2S": "1.63"
+        		},
+        		{
+        			"threeW4S": "0.77"
+        		},
+        		{
+        			"threeWDiesel": "0.14"
+        		},
+        		{
+        			"threeWCNG": "2.06"
+        		},
+        		{
+        			"LCVLT300": "1.28"
+        		},
+        		{
+        			"LCVGT300": "1.35"
+        		}
+
+
+        	],
+        	"NOx": [{
+        			"MopedLT80": "0.02"
+        		},
+        		{
+        			"MopedLT100": "0.29"
+        		},
+        		{
+        			"Scooter2SLT80": "0.03"
+        		},
+        		{
+        			"Scooter2SGT80": "0.02"
+        		},
+        		{
+        			"Scooter4SGT100": "0.25"
+        		},
+        		{
+        			"MotorcycleLT100": "0.27"
+        		},
+        		{
+        			"Motorcycle100TO200": "0.54"
+        		},
+        		{
+        			"MotorcycleGT100": "0.15"
+        		},
+        		{
+        			"threeW2S": "0.16"
+        		},
+        		{
+        			"threeW4S": "0.53"
+        		},
+        		{
+        			"threeWDiesel": "0.51"
+        		},
+        		{
+        			"threeWCNG": "0.19"
+        		},
+        		{
+        			"LCVLT300": "2.48"
+        		},
+        		{
+        			"LCVGT300": "2.12"
+        		}
+
+
+        	],
+        	"CO2": [{
+        			"MopedLT80": "36.81"
+        		},
+        		{
+        			"MopedLT100": "20.09"
+        		},
+        		{
+        			"Scooter2SLT80": "27.08"
+        		},
+        		{
+        			"Scooter2SGT80": "38.54"
+        		},
+        		{
+        			"Scooter4SGT100": "42.06"
+        		},
+        		{
+        			"MotorcycleLT100": "24.97"
+        		},
+        		{
+        			"Motorcycle100TO200": "24.82"
+        		},
+        		{
+        			"MotorcycleGT100": "45.60"
+        		},
+        		{
+        			"threeW2S": "71.50"
+        		},
+        		{
+        			"threeW4S": "73.80"
+        		},
+        		{
+        			"threeWDiesel": "131.61"
+        		},
+        		{
+        			"threeWCNG": "57.71"
+        		},
+        		{
+        			"LCVLT300": "333.31"
+        		},
+        		{
+        			"LCVGT300": "401.25"
+        		}
+
+
+        	],
+        	"PM": [{
+        			"MopedLT80": "0.018"
+        		},
+        		{
+        			"MopedLT100": "0.010"
+        		},
+        		{
+        			"Scooter2SLT80": "0.049"
+        		},
+        		{
+        			"Scooter2SGT80": "0.057"
+        		},
+        		{
+        			"Scooter4SGT100": "0.015"
+        		},
+        		{
+        			"MotorcycleLT100": "0.035"
+        		},
+        		{
+        			"Motorcycle100TO200": "0.023"
+        		},
+        		{
+        			"MotorcycleGT100": "0.013"
+        		},
+        		{
+        			"threeW2S": "0.043"
+        		},
+        		{
+        			"threeW4S": "0.015"
+        		},
+        		{
+        			"threeWDiesel": "0.091"
+        		},
+        		{
+        			"threeWCNG": "0.118"
+        		},
+        		{
+        			"LCVLT300": "0.655"
+        		},
+        		{
+        			"LCVGT300": "0.475"
+        		}
+        	]
+
+        };
+
+        console.log(data);
+        console.log(data["CO"][2].Scooter2SLT80);
+
+        Pol = document.getElementById('Pol').value;
+        console.log(Pol);
+        EF = document.getElementById('Rank').value;
+        console.log(EF);
+        Rank3 = document.getElementById('Rank3').value;
+        console.log(Rank3);
+
+        Rank4 = document.getElementById('Rank4').value;
+        console.log(Rank4);
+        Rank5 = document.getElementById('Rank5').value;
+        console.log(Rank5);
+
+        if (EF == "LCV") {
+          if (Rank5 == "Less Than 300 cc") {
+            console.log(data[Pol][12].LCVLT300);
+            valueEF = data[Pol][12].LCVLT300;
+          }else if (Rank5 == "Greater Than 300 cc") {
+            console.log(data[Pol][13].LCVGT300);
+            valueEF = data[Pol][13].LCVGT300;
+          }
+        }
+
+
+        if (EF == "3W") {
+          if (Rank4 == "2 Stroke") {
+            console.log(data[Pol][8].threeW2S);
+            valueEF = data[Pol][8].threeW2S;
+          }else if (Rank4 == "4 Stroke") {
+            console.log(data[Pol][9].threeW4S);
+            valueEF = data[Pol][9].threeW4S;
+          }else if (Rank4 == "Diesel") {
+            console.log(data[Pol][10].threeWDiesel);
+            valueEF = data[Pol][10].threeWDiesel;
+          }else if (Rank4 == "CNG") {
+            console.log(data[Pol][11].threeWCNG);
+            valueEF = data[Pol][11].threeWCNG;
+          }
+        }
+
+
+        if (EF == "2W") {
+          if (Rank3 == "Moped Less Than 80 cc") {
+            console.log(data[Pol][0].MopedLT80);
+            valueEF = data[Pol][0].MopedLT80;
+          }else if (Rank3 == "Moped Less Than 100 cc") {
+            console.log(data[Pol][1].MopedLT100);
+            valueEF = data[Pol][1].MopedLT100;
+          }else if (Rank3 == "Scooter Less Than 80 cc") {
+            console.log(data[Pol][2].Scooter2SLT80);
+            valueEF = data[Pol][2].Scooter2SLT80;
+          }else if (Rank3 == "Scooter Greater Than 80 cc") {
+            console.log(data[Pol][3].Scooter2SGT80);
+            valueEF = data[Pol][3].Scooter2SGT80;
+          }else if (Rank3 == "Scooter Greater Than 100 cc") {
+            console.log(data[Pol][4].Scooter4SGT100);
+            valueEF = data[Pol][4].Scooter4SGT100;
+          }else if (Rank3 == "Motorcycle Less Than 100 cc") {
+            console.log(data[Pol][5].MotorcycleLT100);
+            valueEF = data[Pol][5].MotorcycleLT100;
+          }else if (Rank3 == "Motorcycle 100-200 cc") {
+            console.log(data[Pol][6].Motorcycle100TO200);
+            valueEF = data[Pol][6].Motorcycle100TO200;
+          }else if (Rank3 == "Motorcycle Greater Than 200 cc") {
+            console.log(data[Pol][7].MotorcycleGT100);
+            valueEF = data[Pol][7].MotorcycleGT100;
+          }
+        }
+
+        x = input1 / (2 * valueEF * NODP)
+        // alert(x);
+        dist = Math.round(x);
+        //var dist = input1;
+        labelx = dist.toString();
+
+        var markerIcon = {
+  url: 'http://image.flaticon.com/icons/svg/252/252025.svg',
+  scaledSize: new google.maps.Size(80, 80),
+  origin: new google.maps.Point(0, 0),
+  anchor: new google.maps.Point(32,65),
+  labelOrigin: new google.maps.Point(40,33)
+};
+
+        //The marker, positioned
+        var marker = new google.maps.Marker({
+          position: {
+            lat: lat,
+            lng: lng
+          },
+          icon: markerIcon,
+          animation: google.maps.Animation.DROP,
+          color: "#eb3a44",
+          label: labelx,
+          map: map
+        });
+
+
+        myLoc = {
+            "locs": [
+              { "lat":"18.53272183", "lon":"73.85611183" },
+              { "lat":"18.53083354", "lon":"73.85029674" }
+            ]
+         }
+
+
+         // 18,53424662	73,85127654
+         // 18,53628152	73,8517016
+         // 18,52488036	73,85428417
+         // 18,52793478	73,85526641
+         // 18,50842628	73,83208867
+         // 18,50481676	73,82835397
+         // 18,51145728	73,83896022
+         // 18,5157984	73,84018408
+         // 18,51975905	73,8525325
+         // 18,5156997	73,84848683
+         // 18,51000995	73,84664524
+         // 18,51662768	73,85364989
+         // 18,51770023	73,85802882
+         // 18,52040036	73,85973403
+         // 18,53072606	73,86216582
+         // 18,53432571	73,86436032
+         // 18,53012996	73,86442563
+         // 18,52692622	73,87050112
+         // 18,52675069	73,86309446
+         // 18,51923456	73,86566302
+         // 18,52026038	73,86760883
+         // 18,53171628	73,8691077
+         // 18,53291542	73,87413855
+         // 18,53818171	73,87594318
+         // 18,53946532	73,88741871
+         // 18,54543427	73,88879412
+         // 18,54841553	73,89407918
+         // 18,55387521	73,90429829
+         // 18,54639407	73,89827891
+         // 18,54889503	73,87440842
+         // 18,55248455	73,87618874
+         // 18,55138007	73,88471629
+         // 18,55133158	73,83104558
+         // 18,55058167	73,82578643
+         // 18,55749791	73,82298156
+         // 18,56302336	73,82720552
+         // 18,56505413	73,8078878
+         // 18,56042757	73,80612537
+         // 18,55838671	73,81219582
+         // 18,53715079	73,81911043
+         // 18,53544109	73,81335709
+         // 18,53491555	73,80584108
+         // 18,53148077	73,79207925
+         // 18,53748819	73,79679953
+         // 18,54088859	73,76794967
+         // 18,50427524	73,82124065
+         // 18,50818052	73,80945327
+         // 18,50573163	73,8035375
+         // 18,50997464	73,79398455
+         // 18,5122327	73,81076034
+         // 18,51253768	73,82128438
+         // 18,50863076	73,82365283
+         // 18,50425942	73,79392278
+         // 18,50780359	73,78731934
+         // 18,50628017	73,78278775
+         // 18,50966335	73,77446219
+         // 18,51731544	73,77926359
+         // 18,5138197	73,79338588
+         // 18,53083712	73,89502774
+         // 18,50218945	73,90262982
+         // 18,4961786	73,90446765
+         // 18,48821506	73,91164962
+         // 18,50466838	73,90552519
+         // 18,51012104	73,90533173
+         // 18,51406432	73,90610066
+         // 18,51981904	73,90574646
+         // 18,51152729	73,85404402
+         // 18,51318973	73,85613821
+         // 18,51033658	73,8587887
+         // 18,50717019	73,85708043
+         // 18,50266912	73,86004245
+         // 18,49834786	73,85713897
+         // 18,49816665	73,86277878
+         // 18,49326935	73,85950322
+         // 18,4832944	73,85874229
+         // 18,47215549	73,855283
+         // 18,46958558	73,85732961
+         // 18,47175639	73,86047237
+
+         i = 0;
+         for (i in myLoc.locs) {
+            lat = myLoc.locs[i].lat ;
+            lng = myLoc.locs[i].lon ;
+         console.log(lat,lng);
+
+        api_link = 'https://isoline.route.cit.api.here.com/routing/7.2/calculateisoline.json?mode=fastest%3Bcar&start='
+        + lat + '%2C' + lng +
+        '&rangetype=distance&range=' + dist + '&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg'
+
+            data = $.getJSON(api_link,
+              // 'https://isoline.route.cit.api.here.com/routing/7.2/calculateisoline.json?mode=fastest%3Bpedestrian&start=52.5200%2C13.4050&rangetype=distance&range=1000&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg',
+              //'https://isoline.route.cit.api.here.com/routing/7.2/calculateisoline.json?mode=fastest%3Bpedestrian&start=48.1835%2C11.6076&rangetype=distance&range=5000&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg',
+              function(data) {
+                  var num = data.response.isoline[0].component[0].shape;
+                  var dict = []; // create an empty array
+                  for (i = 0; i < num.length; i++) {
+                    // text += cars[i] + "<br>";
+                    var res = data.response.isoline[0].component[0].shape[i].split(",");
+                    dict.push({
+                      lat: parseFloat(res[0]),
+                      lng: parseFloat(res[1])
+                    });
+                  }
+                  // console.log(dict);
+                  //passing the data to the map to draw isochrones
+                  //initMap(dict,lat,lng);
+                  document.getElementById('map'), {
+                    zoom: 10,
+                    center: {
+                      lat: lat,
+                      lng: lng
+                    },
+                    mapTypeId: 'terrain'
+                  }
+
+                  var bermudaTriangle = new google.maps.Polygon({
+                    paths: dict,
+                    strokeColor: '#FF0000',//'#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35
+                  });
+                  bermudaTriangle.setMap(map);
+
+                })
+
+            }
+        //get isochrone data of clicked location
+        //isochrone(lat,lng);
+      });
+
+
+    }
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+
+
+
+
+
+  </script>
+
+
+
+  <div class="container-fluid" style="min-height:95%; ">
+    <div class="row">
+      <div class="col-sm-12">
+        <br>
+        <center>
+          <h3>Emission Control</h3>
+        </center>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-2">
+
+        <form name="form" method="post">
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Emission Budget</label>
+            <input type="number" name="v_emission" class="form-control" id="Input1" placeholder=0>
+          </div>
+          <div class="form-group">
+
+
+      <label for="LabelPF">Pollutant</label>
+      <select class="form-control" id="Pol" title="" name="Pol">
+          <option value="CO">CO</option>
+          <option value="HC">HC</option>
+          <option value="NOx">NOx</option>
+          <option value="CO2">CO2</option>
+          <option value="PM">PM</option>
+      </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+          <div class="form-group">
+            <label for="EF">Emission Factor</label>
+            <select class="form-control" id="Rank" title="" name="Rank">
+                <option value="">-Select Vehicle Type-</option>
+                <option value="2W">2W</option>
+                <option value="3W">3W</option>
+                <option value="LCV">LCV</option>
+            </select>
+
+            <div class="container">
+                <div class="2W" >
+                    Select Sub-Category:
+                </div>
+                <div class="3W">
+                    Select Sub-Category:
+                </div>
+                <div class="LCV">
+                    Select Sub-Category:
+                </div>
+            </div>
+
+            <div class="container" id="Rank2">
+                <div class="2W" >
+                    <select class="form-control" id="Rank3">
+                      <option>Moped Less Than 80 cc</option>
+                      <option>Moped Less Than 100 cc</option>
+                      <option>Scooter Less Than 80 cc</option>
+                      <option>Scooter Greater Than 80 cc</option>
+                      <option>Scooter Greater Than 100 cc</option>
+                      <option>Motorcycle Less Than 100 cc</option>
+                      <option>Motorcycle 100-200 cc</option>
+                      <option>Motorcycle Greater Than 200 cc</option>
+                    </select>
+                </div>
+                <div class="3W">
+                    <select class="form-control" id="Rank4">
+                      <option>2 Stroke</option>
+                      <option>4 Stroke</option>
+                      <option>Diesel</option>
+                      <option>CNG</option>
+                    </select>
+                </div>
+                <div class="LCV">
+                    <select class="form-control" id="Rank5">
+                      <option> Less Than 300 cc </option>
+                      <option> Greater Than 300 cc </option>
+                    </select>
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlSelect3">Number of Delivery Persons</label>
+            <input type="number" class="form-control" id="NODP" placeholder=0>
+          </div>
+
+
+        </form>
+        <br>
+        <!-- <button type="button" onclick="initMap()" class="btn btn-lg btn-primary">Calculate</button> -->
+        <br>
+        <br>
+
+
+      </div>
+      <!--col-sm-10-->
+      <!-- </div> -->
+
+
+      <div class="col-sm-10">
+        <!--The div element for the map -->
+        <div id="map"></div>
+        <div class='container-fluid'>
+          <br><br> {% block content %} {% endblock %}
+        </div>
+      </div>
+    </div>
+   </div>
+
+  <footer>
+    <div class="container-fluid" style='margin-bottom:1px'>
+      <p><a href="https://www.linkedin.com/in/santanu29/" target="LinkedIn">LinkedIn</a> |
+        <a href="https://www.facebook.com/" target="Facebook">Facebook</a> |
+        <a href="https://www.google.com/" target="Google">Google+</a></p>
+      &copy; Copyright 2018 TUM
+    </div>
+  </footer>
+
+</body>
+
+</html>
